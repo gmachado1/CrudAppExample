@@ -99,7 +99,6 @@ public class Questao3Servlet extends HttpServlet {
 		requestDispatcher.forward(req, resp);
 
 //		resp.setCharacterEncoding("UTF-8");
-//		resp.getWriter().print("Respondendo vc zé!");
 	}
 
 }

@@ -10,23 +10,18 @@ import javax.persistence.Table;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
-//@Indexed
 @Entity
 @Table(name = "User")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-//	@Field
 	private int id;
 	@Column
-//	@Field
 	private String name;
 	@Column
-//	@Field
 	private String role;
 	@Column
-//	@Field
 	private String phone;
 
 	public User(String name, String role, String phone) {

@@ -1,14 +1,13 @@
 package br.com.metraton.prova.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.query.dsl.QueryBuilder;
 
 import br.com.metraton.prova.model.User;
 import br.com.metraton.prova.util.HibernateUtil;
@@ -38,27 +37,44 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<User> getSpecificUsers(User user) {
 		List<User> users = new ArrayList<User>();
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.getCurrentSession();
+		try {
+			Transaction tx = session.beginTransaction();
+			StringBuilder sql = new StringBuilder("select * from user where");
+			//SQLQuery query = session.createSQLQuery();
+			if (user.getName().length()>2) {
+				sql.append(" name like'"+user.getName()+"%' and ");
+			}
+			if (user.getPhone().length()>2) {
+				sql.append(" phone like'"+user.getPhone()+"%' and ");
+			}
+			if (user.getRole().length()>2) {
+				sql.append(" name like'"+user.getRole()+"%' and ");
+			}
+			System.out.println(sql.substring(0, sql.toString().length()-4));
+			SQLQuery query = session.createSQLQuery(sql.substring(0, sql.toString().length()-5));
+			if(query.list().size()>0) {
+				users.addAll(mapResult(query.list()));
+			}
 			
-			FullTextSession fullTextSession = Search.getFullTextSession(session);
-			
-			fullTextSession.beginTransaction();
-			
-			//teste
-			//fullTextSession.createIndexer().startAndWait();
-			QueryBuilder queryBuilder = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(User.class).get();
-			
-			org.apache.lucene.search.Query query = queryBuilder.keyword().wildcard().onField("name").matching(user.getName()+"*").createQuery();
-//, "role", "phone"
-			//javax.persistence.Query hibernateQuery  =fullTextSession.createFullTextQuery(query, User.class);
-			 
-			FullTextQuery jpaquery = fullTextSession.createFullTextQuery(query, User.class);
-			
-			users = jpaquery.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		return users;
+	}
+
+	private List<User> mapResult(List<Object[]> list) {
+		List<User> users = new ArrayList<User>();
+		for (Object[] row: list) {
+			User user = new User();
+			user.setId(Integer.parseInt(row[0].toString()));
+			user.setName(row[1].toString());
+			user.setPhone(row[2].toString());
+			user.setRole(row[3].toString());
+			users.add(user);
+		}
 		return users;
 	}
 
