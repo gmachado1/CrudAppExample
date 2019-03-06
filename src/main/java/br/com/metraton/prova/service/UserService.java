@@ -18,4 +18,6 @@ public interface UserService {
 	public void edit(User user,int indice);
 
 	public List<User> getSpecificUsers(User user);
+	
+	public List<User> getAllUsersMapped();
 }

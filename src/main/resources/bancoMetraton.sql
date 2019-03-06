@@ -33,23 +33,24 @@ INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (1,'Gust
 INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (2,'Hamilton',2);
 INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (3,'Rafael',3);
 INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (9,'Rafaela',3);
-INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (4,'Zé',4);
+INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (4,'Zeca',4);
 INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (5,'Zamora',4);
 INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (6,'Zigoto',4);
-INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (7,'Zoológio',4);
+INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (7,'Zolane',4);
 INSERT INTO metratonweb.usuario (`id_usuario`,`nome`,`id_cargo`) VALUES (8,'Zúmia',4);
 
 
 -- telefone
+select *from telefone
 INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (1,21,984588122,1);
 INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (2,21,926182040,2);
 INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (3,21,833701812,3);
 INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (9,21,242424242,9);
-INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (5,21,123456788,4);
-INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (6,21,887654321,4);
-INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (7,31,113355779,4);
-INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (8,11,224466880,4);
-
+INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (5,21,123456788,5);
+INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (6,21,887654321,6);
+INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (7,31,113355779,7);
+INSERT INTO metratonweb.telefone (`id_telefone`,`ddd`,`numero`,`id_usuario`) VALUES (8,11,224466880,8);
+-- update metratonweb.telefone set id_usuario=8 where id_telefone=8
 
 -- selects das tabelas
 select * from metratonweb.cargo;
@@ -58,10 +59,14 @@ select * from metratonweb.telefone;
 
 -- Questao Banco de dados 
 -- a) Selecione o nome dos usuários que não possuem telefone.
-Select u.nome AS nome from metratonweb.usuario as u left join telefone as t on u.id_usuario=t.id_usuario where t.numero is null;
+Select u.nome AS nome from metratonweb.usuario as u 
+	left join telefone as t on u.id_usuario=t.id_usuario 
+    where t.numero is null;
 
 -- b) Selecione o nome de todos os caminhoneiros do Rio de Janeiro.
-select u.nome, t.ddd,t.numero f, c.nome from usuario as u inner join telefone as t on t.id_usuario = u.id_usuario inner join cargo as c on u.id_cargo = c.id_cargo 
+select u.nome, t.ddd,t.numero f, c.nome from usuario as u 
+	inner join telefone as t on t.id_usuario = u.id_usuario 
+    inner join cargo as c on u.id_cargo = c.id_cargo 
 where t.ddd = 21 and c.nome= 'Caminhoneiro'; 
 
 /** c) Selecione o nome dos cargos que possuem mais de 2 funcionários 
@@ -70,39 +75,11 @@ where t.ddd = 21 and c.nome= 'Caminhoneiro';
 Inner join usuario as u on u.id_cargo = c.id_cargo
 Group by c.nome Having qtd > 2;
 
-
-
-
-
-desc User;
--- deletar tabela
-drop table user;
-
-
-
-
-
-
-
-
-
-
--- versao 1 da aplicacao
-create table User(
-id int auto_increment not null primary key,
-name varchar(50) not null,
-role varchar(50)not null,
-phone varchar(50)not null);
--- versao 1 da aplicacao
-INSERT INTO metratonweb.user (`id`,`name`,`phone`,`role`) VALUES (1,'Gustavo','21984588122','Arquiteto');
-INSERT INTO metratonweb.user (`id`,`name`,`phone`,`role`) VALUES (2,'Alberto','2126182040','Programador');
-INSERT INTO metratonweb.user (`id`,`name`,`phone`,`role`) VALUES (3,'Rafael','21370181222','Designer');
-INSERT INTO metratonweb.user (`id`,`name`,`phone`,`role`) VALUES (1,'Gustavo','21984588122','Arquiteto');
-INSERT INTO metratonweb.user (`id`,`name`,`phone`,`role`) VALUES (2,'Alberto','2126182040','Programador');
-INSERT INTO metratonweb.user (`id`,`name`,`phone`,`role`) VALUES (3,'Rafael','21370181222','Designer');
-
--- selecionar todo conteudo da tabela
-select * from metratonWeb.user;
-
--- like
-select * from metratonWeb.user where phone like'%22'
+-- select users
+Select * from metratonweb.usuario
+-- select busca
+Select u.id_usuario as idUsuario, u.nome as nomeUsuario , c.id_cargo as idCargo, 
+c.nome as nomeCargo, t.id_telefone as idTel, t.ddd as ddd, t.numero as numero 
+from metratonweb.usuario as u left join metratonweb.telefone as t on t.id_usuario=u.id_usuario 
+inner join metratonweb.cargo as c on  u.id_cargo=c.id_cargo -- where u.nome like 'raf%';
+ 

@@ -45,4 +45,9 @@ public class UserServiceImpl implements UserService {
 		return (List<User>) userDao.getSpecificUsers(user);
 	}
 
+	@Override
+	public List<User> getAllUsersMapped() {
+		return userDao.getAllUsersMapped();
+	}
+
 }

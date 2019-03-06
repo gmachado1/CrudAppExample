@@ -61,7 +61,7 @@ public class Questao3Servlet extends HttpServlet {
 			}
 		}
 		req.setAttribute("user", user);
-		req.setAttribute("userList", userService.getAllUsers());
+		req.setAttribute("userList", userService.getAllUsersMapped());
 		requestDispatcher.forward(req, resp);
 	}
 
@@ -88,7 +88,7 @@ public class Questao3Servlet extends HttpServlet {
 		if (actionSearch != null && actionSearch.equals("Enviar")) {
 			req.setAttribute("userList", userService.getSpecificUsers(user));
 		} else {
-			req.setAttribute("userList", userService.getAllUsers());
+			req.setAttribute("userList", userService.getAllUsersMapped());
 		}
 		user = new User();
 		user.setName("");
